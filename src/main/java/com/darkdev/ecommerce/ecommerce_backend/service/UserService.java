@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.util.Optional;
+
 
 @Service
 public class UserService {
@@ -53,6 +55,15 @@ public class UserService {
             userRepository.deleteById(idUser);
         } catch (Exception e) {
             throw new Exception("Email not found");
+        }
+    }
+
+    public User detail(Integer idUser) throws Exception {
+        try {
+            return userRepository.findById(idUser)
+                    .orElseThrow(() -> new Exception("Profile not found"));
+        } catch (Exception e) {
+            throw new Exception("Profile not found");
         }
     }
 }

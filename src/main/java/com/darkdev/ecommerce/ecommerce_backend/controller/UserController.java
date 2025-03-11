@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -75,7 +77,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/remove/{idUser}")
+    @DeleteMapping("/{idUser}")
     public ResponseEntity<Object> remove(@PathVariable Integer idUser){
         try {
             userService.remove(idUser);
@@ -84,6 +86,19 @@ public class UserController {
             return new ResponseEntity<>(new ApiResponseDTO<UserDeleteResponseDTO>(true, "Remove success", userDeleteResponseDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>(e.getMessage(), false, null, null), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{idUser}")
+    public ResponseEntity<Object> profile(@PathVariable Integer idUser) {
+        try {
+            User userProfile = userService.detail(idUser);
+            UserResponseDTO userResponseDTO = new UserResponseDTO(userProfile.getName(), userProfile.getEmail(), userProfile.getRole());
+
+            return new ResponseEntity<>(new ApiResponseDTO<UserResponseDTO>(true, "Profile found", userResponseDTO), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiErrorResponseDTO<>("Profile not found", false, null, null), HttpStatus.BAD_REQUEST);
         }
     }
 
