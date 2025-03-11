@@ -1,6 +1,8 @@
 package com.darkdev.ecommerce.ecommerce_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 public class User {
@@ -9,9 +11,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "iduser")
     private Integer idUser;
+
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
+
+    @NotEmpty(message = "Email cannot be empty")
+    @Email(message = "Email should be valid")
     private String email;
+
+    @NotEmpty(message = "Password cannot be null")
     private String password;
+
+    @NotEmpty(message = "Role cannot be empty")
     private String role;
 
     public String getPassword() {

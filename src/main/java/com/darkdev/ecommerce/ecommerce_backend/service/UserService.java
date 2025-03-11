@@ -5,6 +5,8 @@ import com.darkdev.ecommerce.ecommerce_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 
 @Service
 public class UserService {
@@ -16,13 +18,23 @@ public class UserService {
         User user = userRepository.findByEmail(email);
 
         if (user == null) {
-            throw new IllegalArgumentException("Usuario no encontrado");
+            throw new IllegalArgumentException("User not found");
         }
 
         if (!user.getPassword().equals(password)) {
-            throw new IllegalArgumentException("Contraseña incorrecta");
+            throw new IllegalArgumentException("User password wrong");
         }
 
         return user;
+    }
+
+    public User register(User user) throws Exception {
+        try {
+            return userRepository.save(user);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new Exception("Email already exists");
+        }
+
     }
 }
