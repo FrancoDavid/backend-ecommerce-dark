@@ -37,4 +37,22 @@ public class UserService {
         }
 
     }
+
+    public User update(User user) throws Exception {
+        try {
+            return userRepository.save(user);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new Exception("Email already exists");
+        }
+
+    }
+
+    public void remove(Integer idUser) throws Exception {
+        try {
+            userRepository.deleteById(idUser);
+        } catch (Exception e) {
+            throw new Exception("Email not found");
+        }
+    }
 }

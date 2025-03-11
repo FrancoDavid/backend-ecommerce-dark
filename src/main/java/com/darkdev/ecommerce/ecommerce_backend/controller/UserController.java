@@ -3,6 +3,7 @@ package com.darkdev.ecommerce.ecommerce_backend.controller;
 import com.darkdev.ecommerce.ecommerce_backend.dto.global.ApiErrorResponseDTO;
 import com.darkdev.ecommerce.ecommerce_backend.dto.global.ApiResponseDTO;
 import com.darkdev.ecommerce.ecommerce_backend.dto.user.LoginRequestDTO;
+import com.darkdev.ecommerce.ecommerce_backend.dto.user.UserDeleteResponseDTO;
 import com.darkdev.ecommerce.ecommerce_backend.dto.user.UserResponseDTO;
 import com.darkdev.ecommerce.ecommerce_backend.model.User;
 import com.darkdev.ecommerce.ecommerce_backend.service.UserService;
@@ -55,4 +56,35 @@ public class UserController {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>(e.getMessage(), false, null, null), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<Object> update(@Valid @RequestBody User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(new ApiErrorResponseDTO<ObjectError>(
+                    "Error validations", false, bindingResult.getAllErrors(), null), HttpStatus.BAD_REQUEST
+            );
+        }
+
+        try {
+            User userSaved = userService.update(user);
+            UserResponseDTO userResponseDTO = new UserResponseDTO(userSaved.getEmail(), userSaved.getName(), userSaved.getRole());
+
+            return new ResponseEntity<>(new ApiResponseDTO<UserResponseDTO>(true, "Update success", userResponseDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiErrorResponseDTO<>(e.getMessage(), false, null, null), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/remove/{idUser}")
+    public ResponseEntity<Object> remove(@PathVariable Integer idUser){
+        try {
+            userService.remove(idUser);
+            UserDeleteResponseDTO userDeleteResponseDTO = new UserDeleteResponseDTO(idUser);
+
+            return new ResponseEntity<>(new ApiResponseDTO<UserDeleteResponseDTO>(true, "Remove success", userDeleteResponseDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiErrorResponseDTO<>(e.getMessage(), false, null, null), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
