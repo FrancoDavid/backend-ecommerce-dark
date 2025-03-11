@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -99,6 +99,20 @@ public class UserController {
 
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>("Profile not found", false, null, null), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Object> users() {
+        try {
+            List<User> userList = userService.users();
+            List<UserResponseDTO> userResponseDTOList = userList.stream()
+                    .map(user -> new UserResponseDTO(user.getName(), user.getEmail(), user.getRole()))
+                    .toList();
+            return new ResponseEntity<>(new ApiResponseDTO<>(true, "Profiles list success", userResponseDTOList), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiErrorResponseDTO<>("Profiles not found", false, null, null), HttpStatus.BAD_REQUEST);
         }
     }
 

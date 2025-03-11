@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.Optional;
+import java.util.List;
 
 
 @Service
@@ -64,6 +64,14 @@ public class UserService {
                     .orElseThrow(() -> new Exception("Profile not found"));
         } catch (Exception e) {
             throw new Exception("Profile not found");
+        }
+    }
+
+    public List<User> users() throws Exception {
+        try {
+            return userRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception("Users not found");
         }
     }
 }
