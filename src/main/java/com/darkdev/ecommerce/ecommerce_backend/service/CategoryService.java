@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class CategoryService {
@@ -49,4 +50,9 @@ public class CategoryService {
             throw new Exception("Categories not found");
         }
     };
+
+    public Category category(Integer idCategory) throws Exception {
+         return categoryRepository.findById(idCategory)
+                    .orElseThrow(() -> new Exception("Category not found"));
+    }
 }
