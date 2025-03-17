@@ -4,7 +4,6 @@ import com.darkdev.ecommerce.ecommerce_backend.model.Category;
 import com.darkdev.ecommerce.ecommerce_backend.model.Product;
 import com.darkdev.ecommerce.ecommerce_backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +22,7 @@ public class ProductService {
             throw new Exception("Create product failed");
         }
     };
+
     public Product update(Product product, Category category) throws Exception {
         product.setCategory(category);
         try {
@@ -31,6 +31,7 @@ public class ProductService {
             throw new Exception("Create product failed");
         }
     };
+
     public void remove(Integer idProduct) throws Exception {
         try {
             productRepository.deleteById(idProduct);
@@ -38,10 +39,12 @@ public class ProductService {
             throw new Exception("Remove product failed");
         }
     };
+
     public Product product(Integer idProduct) throws Exception {
         return productRepository.findById(idProduct)
                 .orElseThrow(() -> new Exception("Product not found"));
     };
+
     public List<Product> products() throws Exception {
         try {
             return productRepository.findAll();
@@ -50,4 +53,13 @@ public class ProductService {
             throw new Exception("Categories not found");
         }
     };
+
+    public List<Product> searchByName(String name) throws RuntimeException {
+        try {
+            return productRepository.findByName(name);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Product not found: " + e.getMessage());
+        }
+    }
+
 }

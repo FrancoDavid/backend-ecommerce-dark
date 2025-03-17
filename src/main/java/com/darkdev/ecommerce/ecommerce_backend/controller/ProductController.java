@@ -142,4 +142,34 @@ public class ProductController {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>("Products not found", false, null, null), HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<Object> searchProduct(@PathVariable String name) {
+        try {
+            List<Product> productList = productService.searchByName(name);
+            List<ProductResponseDTO> productResponseDTOList = productList.stream()
+                    .map(product -> {
+                        Category category = product.getCategory();
+                        return new ProductResponseDTO(
+                                product.getName(),
+                                product.getDescription(),
+                                product.getPrice(),
+                                product.getStock(),
+                                category.getName()
+                        );
+                    })
+                    .toList();
+
+
+            if (productResponseDTOList.isEmpty()) {
+                return new ResponseEntity<>(new ApiErrorResponseDTO<>("Products not found", false, null, null), HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(new ApiResponseDTO<>(true, "Products found", productResponseDTOList), HttpStatus.OK);
+            }
+
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiErrorResponseDTO<>("Products not found", false, null, null), HttpStatus.NOT_FOUND);
+        }
+    }
 }
