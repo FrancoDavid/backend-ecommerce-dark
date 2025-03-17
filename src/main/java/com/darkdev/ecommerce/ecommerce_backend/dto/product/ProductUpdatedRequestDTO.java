@@ -1,38 +1,19 @@
-package com.darkdev.ecommerce.ecommerce_backend.model;
+package com.darkdev.ecommerce.ecommerce_backend.dto.product;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-
-@Entity
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idproduct")
+public class ProductUpdatedRequestDTO {private String name;
     private Integer idProduct;
-
-    @NotEmpty(message = "Name cannot be empty")
-    private String name;
-
     private String description;
-
     private Integer price;
-
     private Integer stock;
+    private Integer idCategory;
 
-    @ManyToOne
-    @JoinColumn(name = "category_idcategory", nullable = false)
-    private Category category;
-
-    public Product() {}
-
-    public Product(Integer idProduct, String description, String name, Integer price, Integer stock, Category category) {
+    public ProductUpdatedRequestDTO(Integer idProduct,String name, String description, Integer price, Integer stock, Integer idCategory) {
         this.idProduct = idProduct;
-        this.description = description;
         this.name = name;
+        this.description = description;
         this.price = price;
         this.stock = stock;
-        this.category = category;
+        this.idCategory = idCategory;
     }
 
     public Integer getIdProduct() {
@@ -75,11 +56,11 @@ public class Product {
         this.stock = stock;
     }
 
-    public Category getCategory() {
-        return category;
+    public Integer getIdCategory() {
+        return idCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setIdCategory(Integer idCategory) {
+        this.idCategory = idCategory;
     }
 }

@@ -3,7 +3,9 @@ package com.darkdev.ecommerce.ecommerce_backend.controller;
 import com.darkdev.ecommerce.ecommerce_backend.dto.global.ApiErrorResponseDTO;
 import com.darkdev.ecommerce.ecommerce_backend.dto.global.ApiResponseDTO;
 import com.darkdev.ecommerce.ecommerce_backend.dto.product.ProductDeleteResponseDTO;
+import com.darkdev.ecommerce.ecommerce_backend.dto.product.ProductRequestDTO;
 import com.darkdev.ecommerce.ecommerce_backend.dto.product.ProductResponseDTO;
+import com.darkdev.ecommerce.ecommerce_backend.dto.product.ProductUpdatedRequestDTO;
 import com.darkdev.ecommerce.ecommerce_backend.model.Category;
 import com.darkdev.ecommerce.ecommerce_backend.model.Product;
 import com.darkdev.ecommerce.ecommerce_backend.service.CategoryService;
@@ -27,13 +29,21 @@ public class ProductController {
     private CategoryService categoryService;
 
     @PostMapping()
-    public ResponseEntity<Object> create(@Valid @RequestBody Product product, Integer idCategory, BindingResult bindingResult) {
+    public ResponseEntity<Object> create(@Valid @RequestBody ProductRequestDTO productRequestDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>("Error validators", false, null, null), HttpStatus.BAD_REQUEST);
         }
 
         try {
-            Category category = categoryService.category(idCategory);
+            Category category = categoryService.category(productRequestDTO.getIdCategory());
+            Product product = new Product(
+                null,
+                    productRequestDTO.getDescription(),
+                    productRequestDTO.getName(),
+                    productRequestDTO.getPrice(),
+                    productRequestDTO.getStock(),
+                    category
+            );
             Product productSaved = productService.create(product, category);
             ProductResponseDTO productResponseDTO = new ProductResponseDTO(
                     productSaved.getName(),
@@ -50,13 +60,21 @@ public class ProductController {
     }
 
     @PutMapping()
-    public ResponseEntity<Object> update(@Valid @RequestBody Product product, Integer idCategory, BindingResult bindingResult) {
+    public ResponseEntity<Object> update(@Valid @RequestBody ProductUpdatedRequestDTO productUpdatedRequestDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>("Error validators", false, null, null), HttpStatus.BAD_REQUEST);
         }
 
         try {
-            Category category = categoryService.category(idCategory);
+            Category category = categoryService.category(productUpdatedRequestDTO.getIdCategory());
+            Product product = new Product(
+                    productUpdatedRequestDTO.getIdProduct(),
+                    productUpdatedRequestDTO.getDescription(),
+                    productUpdatedRequestDTO.getName(),
+                    productUpdatedRequestDTO.getPrice(),
+                    productUpdatedRequestDTO.getStock(),
+                    category
+            );
             Product productSaved = productService.update(product, category);
             ProductResponseDTO productResponseDTO = new ProductResponseDTO(
                     productSaved.getName(),
@@ -71,7 +89,8 @@ public class ProductController {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>("Product update failed", false, null, null), HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping()
+
+    @DeleteMapping("/{idProduct}")
     public ResponseEntity<Object> remove(@PathVariable Integer idProduct) {
         try {
             productService.remove(idProduct);
@@ -81,7 +100,8 @@ public class ProductController {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>("Product removed failed", false, null, null), HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping()
+
+    @GetMapping("/{idProduct}")
     public ResponseEntity<Object> product(@PathVariable Integer idProduct) {
         try {
             Product product = productService.product(idProduct);
@@ -100,6 +120,7 @@ public class ProductController {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>("Product not found", false, null, null), HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping("/all")
     public ResponseEntity<Object> products() {
         try {
