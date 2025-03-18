@@ -6,6 +6,8 @@ import com.darkdev.ecommerce.ecommerce_backend.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderService {
 
@@ -21,4 +23,20 @@ public class OrderService {
                throw new RuntimeException("Create order failed: " + e.getMessage());
            }
     };
+
+    public List<Order> orderList(User user) throws RuntimeException {
+        try {
+            return orderRepository.findByIdUser_IdUser(user.getIdUser());
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Orders not found" + e.getMessage());
+        }
+    }
+
+    public List<Order> orderAllList() throws RuntimeException {
+        try {
+            return orderRepository.findAll();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Orders not found" + e.getMessage());
+        }
+    }
 }

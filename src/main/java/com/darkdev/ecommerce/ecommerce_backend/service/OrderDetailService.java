@@ -5,6 +5,8 @@ import com.darkdev.ecommerce.ecommerce_backend.repository.OrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderDetailService {
 
@@ -19,6 +21,14 @@ public class OrderDetailService {
             return orderDetailRepository.save(orderDetail);
         } catch (RuntimeException e) {
             throw new RuntimeException("Cannot be created order details: "+ e.getMessage());
+        }
+    }
+
+    public List<OrderDetail> detailList(Order order) throws RuntimeException {
+        try {
+            return orderDetailRepository.findByIdOrder_idOrder(order.getIdOrder());
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Order details not found: "+ e.getMessage());
         }
     }
 }
