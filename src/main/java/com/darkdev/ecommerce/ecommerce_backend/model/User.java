@@ -25,6 +25,17 @@ public class User {
     @NotEmpty(message = "Role cannot be empty")
     private String role;
 
+    public User() {
+    }
+
+    public User(Integer idUser, String name, String email, String password, String role) {
+        this.idUser = idUser;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     public String getPassword() {
         return password;
     }

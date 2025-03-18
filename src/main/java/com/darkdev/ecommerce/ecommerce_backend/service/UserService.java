@@ -74,4 +74,13 @@ public class UserService {
             throw new Exception("Users not found");
         }
     }
+
+    public User searchByEmail(String email)  throws RuntimeException {
+        try {
+            return userRepository.findByEmail(email);
+        } catch (RuntimeException e) {
+            throw  new RuntimeException("User not found: " + e.getMessage());
+        }
+
+    }
 }
