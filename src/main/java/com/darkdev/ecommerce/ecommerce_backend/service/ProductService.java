@@ -4,6 +4,7 @@ import com.darkdev.ecommerce.ecommerce_backend.model.Category;
 import com.darkdev.ecommerce.ecommerce_backend.model.Product;
 import com.darkdev.ecommerce.ecommerce_backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class ProductService {
             return productRepository.findAll();
 
         } catch (Exception e) {
-            throw new Exception("Categories not found");
+            throw new Exception("Products not found");
         }
     };
 
@@ -61,5 +62,16 @@ public class ProductService {
             throw new RuntimeException("Product not found: " + e.getMessage());
         }
     }
+
+    public List<Product> productsLasts() throws Exception {
+        try {
+            return productRepository
+                    .findAll(Sort.by(Sort.Direction.DESC, "idProduct"));
+
+        } catch (Exception e) {
+            throw new Exception("Products not found");
+        }
+    };
+
 
 }

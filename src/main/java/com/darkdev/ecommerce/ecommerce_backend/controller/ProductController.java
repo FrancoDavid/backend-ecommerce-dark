@@ -172,4 +172,27 @@ public class ProductController {
             return new ResponseEntity<>(new ApiErrorResponseDTO<>("Products not found", false, null, null), HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/lasts")
+    public ResponseEntity<Object> productsLasts() {
+        try {
+            List<Product> productList = productService.productsLasts();
+            List<ProductResponseDTO> productResponseDTOList = productList.stream()
+                    .map(product -> {
+                        Category category = product.getCategory();
+                        return new ProductResponseDTO(
+                                product.getName(),
+                                product.getDescription(),
+                                product.getPrice(),
+                                product.getStock(),
+                                category.getName()
+                        );
+                    })
+                    .toList();
+            return new ResponseEntity<>(new ApiResponseDTO<>(true, "Products found", productResponseDTOList), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiErrorResponseDTO<>("Products not found", false, null, null), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
