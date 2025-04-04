@@ -24,7 +24,7 @@ public class CategoryService {
         }
     };
 
-    public Category update(Category category) throws Exception {
+    public Category update(Category category) {
         try {
             return categoryRepository.save(category);
 
@@ -33,7 +33,7 @@ public class CategoryService {
         }
     };
 
-    public void remove(Integer idCategory) throws Exception {
+    public void remove(Integer idCategory) {
         try {
             categoryRepository.deleteById(idCategory);
 
@@ -42,7 +42,7 @@ public class CategoryService {
         }
     };
 
-    public List<Category> categories() throws Exception {
+    public List<Category> categories() {
         try {
             return categoryRepository.findAll();
 
@@ -51,7 +51,7 @@ public class CategoryService {
         }
     };
 
-    public Category category(Integer idCategory) throws Exception {
+    public Category category(Integer idCategory) {
          return categoryRepository.findById(idCategory)
                     .orElseThrow(() -> new RuntimeException("Category not found"));
     }

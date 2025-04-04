@@ -40,49 +40,31 @@ public class CategoryController {
     @PutMapping()
     public ResponseEntity<Object> update(@Valid @RequestBody Category category, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(new ApiErrorResponseDTO<>("Error validations", false, null, null), HttpStatus.BAD_REQUEST);
+            throw new ValidationException("Error validations", ExceptionUtils.getErrorsFromBinding(bindingResult));
         }
 
-        try {
-            Category categorySaved = categoryService.update(category);
-            CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO(categorySaved.getName());
+        Category categorySaved = categoryService.update(category);
+        CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO(categorySaved.getName());
 
-            return new ResponseEntity<>(new ApiResponseDTO<>(true, "Category updated success", categoryResponseDTO), HttpStatus.OK);
-
-        } catch (Exception e) {
-            List<String> errors = Collections.singletonList(e.getMessage());
-            return new ResponseEntity<>(new ApiErrorResponseDTO<>("Category updated failed", false, errors, null), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(new ApiResponseDTO<>(true, "Category updated success", categoryResponseDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{idCategory}")
     public ResponseEntity<Object> remove(@PathVariable Integer idCategory) {
-        try {
-            categoryService.remove(idCategory);
-            CategoryDeleteResponseDTO categoryResponseDTO = new CategoryDeleteResponseDTO(idCategory);
+        CategoryDeleteResponseDTO categoryResponseDTO = new CategoryDeleteResponseDTO(idCategory);
+        categoryService.remove(idCategory);
 
-            return new ResponseEntity<>(new ApiResponseDTO<>(true, "Category removed success", categoryResponseDTO), HttpStatus.OK);
-        } catch (Exception e) {
-            List<String> errors = Collections.singletonList(e.getMessage());
-            return new ResponseEntity<>(new ApiErrorResponseDTO<>("Category removed failed", false, errors, null), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(new ApiResponseDTO<>(true, "Category removed success", categoryResponseDTO), HttpStatus.OK);
     }
 
     @GetMapping()
     public ResponseEntity<Object> categories() {
-        try {
-            List<Category> categoryList = categoryService.categories();
-            List<CategoryResponseDTO> categoryResponseDTOList = categoryList.stream()
-                    .map(category -> new CategoryResponseDTO(category.getName()))
-                    .toList();
+        List<Category> categoryList = categoryService.categories();
+        List<CategoryResponseDTO> categoryResponseDTOList = categoryList.stream()
+                .map(category -> new CategoryResponseDTO(category.getName()))
+                .toList();
 
-            return new ResponseEntity<>(new ApiResponseDTO<>(true, "Categories found", categoryResponseDTOList), HttpStatus.OK);
-        } catch (Exception e) {
-            List<String> errors = Collections.singletonList(e.getMessage());
-
-            return new ResponseEntity<>(new ApiErrorResponseDTO<>("Categories not found", false, errors, null), HttpStatus.BAD_REQUEST);
-        }
-
+        return new ResponseEntity<>(new ApiResponseDTO<>(true, "Categories found", categoryResponseDTOList), HttpStatus.OK);
     }
 
 }
