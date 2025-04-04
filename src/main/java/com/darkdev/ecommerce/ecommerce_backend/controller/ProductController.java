@@ -42,6 +42,7 @@ public class ProductController {
                     productRequestDTO.getName(),
                     productRequestDTO.getPrice(),
                     productRequestDTO.getStock(),
+                    productRequestDTO.getUrl(),
                     category
             );
             Product productSaved = productService.create(product, category);
@@ -50,7 +51,8 @@ public class ProductController {
                     productSaved.getDescription(),
                     productSaved.getPrice(),
                     productSaved.getStock(),
-                    category.getName()
+                    category.getName(),
+                    productSaved.getUrl()
             );
 
             return new ResponseEntity<>(new ApiResponseDTO<>(true, "Product created", productResponseDTO), HttpStatus.OK);
@@ -73,6 +75,7 @@ public class ProductController {
                     productUpdatedRequestDTO.getName(),
                     productUpdatedRequestDTO.getPrice(),
                     productUpdatedRequestDTO.getStock(),
+                    productUpdatedRequestDTO.getUrl(),
                     category
             );
             Product productSaved = productService.update(product, category);
@@ -81,7 +84,8 @@ public class ProductController {
                     productSaved.getDescription(),
                     productSaved.getPrice(),
                     productSaved.getStock(),
-                    category.getName()
+                    category.getName(),
+                    productSaved.getUrl()
             );
 
             return new ResponseEntity<>(new ApiResponseDTO<>(true, "Product updated", productResponseDTO), HttpStatus.OK);
@@ -112,7 +116,8 @@ public class ProductController {
                     product.getDescription(),
                     product.getPrice(),
                     product.getStock(),
-                    category.getName()
+                    category.getName(),
+                    product.getUrl()
             );
 
             return new ResponseEntity<>(new ApiResponseDTO<>(true, "Product found", productResponseDTO), HttpStatus.OK);
@@ -133,7 +138,8 @@ public class ProductController {
                               product.getDescription(),
                               product.getPrice(),
                               product.getStock(),
-                              category.getName()
+                              category.getName(),
+                              product.getUrl()
                       );
                     })
                     .toList();
@@ -155,7 +161,8 @@ public class ProductController {
                                 product.getDescription(),
                                 product.getPrice(),
                                 product.getStock(),
-                                category.getName()
+                                category.getName(),
+                                product.getUrl()
                         );
                     })
                     .toList();
@@ -186,7 +193,8 @@ public class ProductController {
                                 product.getDescription(),
                                 product.getPrice(),
                                 product.getStock(),
-                                category.getName()
+                                category.getName(),
+                                product.getUrl()
                         );
                     })
                     .toList();

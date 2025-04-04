@@ -6,13 +6,15 @@ public class ProductResponseDTO {
     private Integer price;
     private Integer stock;
     private String category;
+    private String url;
 
-    public ProductResponseDTO(String name, String description, Integer price, Integer stock, String category) {
+    public ProductResponseDTO(String name, String description, Integer price, Integer stock, String category, String url) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.category = category;
+        this.url = url;
     }
 
     public String getName() {
@@ -53,5 +55,13 @@ public class ProductResponseDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

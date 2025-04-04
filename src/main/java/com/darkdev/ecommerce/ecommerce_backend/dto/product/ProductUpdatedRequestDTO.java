@@ -1,19 +1,22 @@
 package com.darkdev.ecommerce.ecommerce_backend.dto.product;
 
-public class ProductUpdatedRequestDTO {private String name;
+public class ProductUpdatedRequestDTO {
+    private String name;
     private Integer idProduct;
     private String description;
     private Integer price;
     private Integer stock;
     private Integer idCategory;
+    private String url;
 
-    public ProductUpdatedRequestDTO(Integer idProduct,String name, String description, Integer price, Integer stock, Integer idCategory) {
+    public ProductUpdatedRequestDTO(Integer idProduct,String name, String description, Integer price, Integer stock, Integer idCategory, String url) {
         this.idProduct = idProduct;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.idCategory = idCategory;
+        this.url = url;
     }
 
     public Integer getIdProduct() {
@@ -62,5 +65,13 @@ public class ProductUpdatedRequestDTO {private String name;
 
     public void setIdCategory(Integer idCategory) {
         this.idCategory = idCategory;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
