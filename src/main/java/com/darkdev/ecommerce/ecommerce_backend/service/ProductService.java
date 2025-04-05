@@ -1,5 +1,6 @@
 package com.darkdev.ecommerce.ecommerce_backend.service;
 
+import com.darkdev.ecommerce.ecommerce_backend.exception.BadRequestException;
 import com.darkdev.ecommerce.ecommerce_backend.model.Category;
 import com.darkdev.ecommerce.ecommerce_backend.model.Product;
 import com.darkdev.ecommerce.ecommerce_backend.repository.ProductRepository;
@@ -72,6 +73,22 @@ public class ProductService {
             throw new RuntimeException("Products not found");
         }
     };
+
+    public void descountStock(Product product, Integer quantity) {
+        try {
+            int newStock = product.getStock() - quantity;
+
+            if (newStock < 0) {
+                throw  new BadRequestException("Stock empty", "This product cannot buy it!");
+            }
+
+            product.setStock(newStock);
+            productRepository.save(product);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Product not apply descount stock");
+        }
+    }
 
 
 }
