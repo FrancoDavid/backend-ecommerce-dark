@@ -1,5 +1,7 @@
 package com.darkdev.ecommerce.ecommerce_backend.service;
 
+import com.darkdev.ecommerce.ecommerce_backend.exception.BadRequestException;
+import com.darkdev.ecommerce.ecommerce_backend.exception.NotFoundException;
 import com.darkdev.ecommerce.ecommerce_backend.model.User;
 import com.darkdev.ecommerce.ecommerce_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,67 +22,65 @@ public class UserService {
         User user = userRepository.findByEmail(email);
 
         if (user == null) {
-            throw new IllegalArgumentException("User not found");
+            throw new NotFoundException("User not found", "User don t exists");
         }
 
         if (!user.getPassword().equals(password)) {
-            throw new IllegalArgumentException("User password wrong");
+            throw new BadRequestException("User password wrong", "User don t pass");
         }
 
         return user;
     }
 
-    public User register(User user) throws Exception {
+    public User register(User user) {
         try {
             return userRepository.save(user);
 
-        } catch (DataIntegrityViolationException e) {
-            throw new Exception("Email already exists");
+        } catch (Exception e) {
+            throw new RuntimeException("Email already exists");
+        }
+    }
+
+    public User update(User user) {
+        try {
+            return userRepository.save(user);
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Email already exists");
         }
 
     }
 
-    public User update(User user) throws Exception {
-        try {
-            return userRepository.save(user);
-
-        } catch (DataIntegrityViolationException e) {
-            throw new Exception("Email already exists");
-        }
-
-    }
-
-    public void remove(Integer idUser) throws Exception {
+    public void remove(Integer idUser) {
         try {
             userRepository.deleteById(idUser);
         } catch (Exception e) {
-            throw new Exception("Email not found");
+            throw new RuntimeException("Email not found");
         }
     }
 
-    public User detail(Integer idUser) throws Exception {
+    public User detail(Integer idUser) {
         try {
             return userRepository.findById(idUser)
                     .orElseThrow(() -> new Exception("Profile not found"));
         } catch (Exception e) {
-            throw new Exception("Profile not found");
+            throw new RuntimeException("Profile not found");
         }
     }
 
-    public List<User> users() throws Exception {
+    public List<User> users() {
         try {
             return userRepository.findAll();
         } catch (Exception e) {
-            throw new Exception("Users not found");
+            throw new RuntimeException("Users not found");
         }
     }
 
-    public User searchByEmail(String email)  throws RuntimeException {
+    public User searchByEmail(String email)  {
         try {
             return userRepository.findByEmail(email);
-        } catch (RuntimeException e) {
-            throw  new RuntimeException("User not found: " + e.getMessage());
+        } catch (Exception e) {
+            throw  new RuntimeException("User not found");
         }
-
     }
 }

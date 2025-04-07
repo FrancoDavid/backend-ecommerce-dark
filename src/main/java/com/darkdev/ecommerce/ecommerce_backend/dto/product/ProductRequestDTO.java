@@ -6,13 +6,15 @@ public class ProductRequestDTO {
     private Integer price;
     private Integer stock;
     private Integer idCategory;
+    private String url;
 
-    public ProductRequestDTO(String name, String description, Integer price, Integer stock, Integer idCategory) {
+    public ProductRequestDTO(String name, String description, Integer price, Integer stock, Integer idCategory, String url) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.idCategory = idCategory;
+        this.url = url;
     }
 
     public String getName() {
@@ -53,5 +55,13 @@ public class ProductRequestDTO {
 
     public void setIdCategory(Integer idCategory) {
         this.idCategory = idCategory;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

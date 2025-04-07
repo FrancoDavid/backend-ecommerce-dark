@@ -1,9 +1,11 @@
 package com.darkdev.ecommerce.ecommerce_backend.service;
 
+import com.darkdev.ecommerce.ecommerce_backend.exception.BadRequestException;
 import com.darkdev.ecommerce.ecommerce_backend.model.Category;
 import com.darkdev.ecommerce.ecommerce_backend.model.Product;
 import com.darkdev.ecommerce.ecommerce_backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,52 +16,79 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Product create(Product product, Category category) throws Exception {
+    public Product create(Product product, Category category) {
         product.setCategory(category);
         try {
             return productRepository.save(product);
         } catch (Exception e) {
-            throw new Exception("Create product failed");
+            throw new RuntimeException("Create product failed");
         }
     };
 
-    public Product update(Product product, Category category) throws Exception {
+    public Product update(Product product, Category category) {
         product.setCategory(category);
         try {
             return productRepository.save(product);
         } catch (Exception e) {
-            throw new Exception("Create product failed");
+            throw new RuntimeException("Create product failed");
         }
     };
 
-    public void remove(Integer idProduct) throws Exception {
+    public void remove(Integer idProduct) {
         try {
             productRepository.deleteById(idProduct);
         } catch (Exception e) {
-            throw new Exception("Remove product failed");
+            throw new RuntimeException("Remove product failed");
         }
     };
 
-    public Product product(Integer idProduct) throws Exception {
+    public Product product(Integer idProduct) {
         return productRepository.findById(idProduct)
-                .orElseThrow(() -> new Exception("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Product not found"));
     };
 
-    public List<Product> products() throws Exception {
+    public List<Product> products() {
         try {
             return productRepository.findAll();
 
         } catch (Exception e) {
-            throw new Exception("Categories not found");
+            throw new RuntimeException("Products not found");
         }
     };
 
-    public List<Product> searchByName(String name) throws RuntimeException {
+    public List<Product> searchByName(String name) {
         try {
             return productRepository.findByName(name);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Product not found: " + e.getMessage());
         }
     }
+
+    public List<Product> productsLasts() {
+        try {
+            return productRepository
+                    .findAll(Sort.by(Sort.Direction.DESC, "idProduct"));
+
+        } catch (Exception e) {
+            throw new RuntimeException("Products not found");
+        }
+    };
+
+    public void descountStock(Product product, Integer quantity) {
+        try {
+            int newStock = product.getStock() - quantity;
+
+            if (newStock < 0) {
+                throw  new BadRequestException("Stock empty", "This product cannot buy it!");
+            }
+
+            product.setStock(newStock);
+            productRepository.save(product);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Product not apply descount stock");
+        }
+    }
+
 
 }

@@ -14,28 +14,28 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Order create(User user, Integer total) throws RuntimeException {
+    public Order create(User user, Integer total) {
            try {
                Order order = new Order(null, total, user);
                return orderRepository.save(order);
 
-           } catch (RuntimeException e) {
+           } catch (Exception e) {
                throw new RuntimeException("Create order failed: " + e.getMessage());
            }
     };
 
-    public List<Order> orderList(User user) throws RuntimeException {
+    public List<Order> orderList(User user) {
         try {
             return orderRepository.findByIdUser_IdUser(user.getIdUser());
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Orders not found" + e.getMessage());
         }
     }
 
-    public List<Order> orderAllList() throws RuntimeException {
+    public List<Order> orderAllList() {
         try {
             return orderRepository.findAll();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Orders not found" + e.getMessage());
         }
     }

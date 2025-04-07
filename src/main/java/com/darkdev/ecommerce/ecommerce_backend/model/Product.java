@@ -20,19 +20,23 @@ public class Product {
 
     private Integer stock;
 
+    @NotEmpty(message = "URL cannot be empty")
+    private String url;
+
     @ManyToOne
     @JoinColumn(name = "category_idcategory", nullable = false)
     private Category category;
 
     public Product() {}
 
-    public Product(Integer idProduct, String description, String name, Integer price, Integer stock, Category category) {
+    public Product(Integer idProduct, String description, String name, Integer price, Integer stock, String url, Category category) {
         this.idProduct = idProduct;
         this.description = description;
         this.name = name;
         this.price = price;
         this.stock = stock;
         this.category = category;
+        this.url = url;
     }
 
     public Integer getIdProduct() {
@@ -81,5 +85,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

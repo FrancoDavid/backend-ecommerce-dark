@@ -15,44 +15,44 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Category create(Category category) throws Exception {
+    public Category create(Category category) {
         try {
             return categoryRepository.save(category);
 
-        } catch (DataIntegrityViolationException  e) {
-            throw new Exception("Create category failed");
+        } catch (Exception  e) {
+            throw new RuntimeException("Create category failed: "+ e.getMessage());
         }
     };
 
-    public Category update(Category category) throws Exception {
+    public Category update(Category category) {
         try {
             return categoryRepository.save(category);
 
         } catch (Exception e) {
-            throw new Exception("Updated category failed");
+            throw new RuntimeException("Updated category failed: "+ e.getMessage());
         }
     };
 
-    public void remove(Integer idCategory) throws Exception {
+    public void remove(Integer idCategory) {
         try {
             categoryRepository.deleteById(idCategory);
 
         } catch (Exception e) {
-            throw new Exception("Removed category failed");
+            throw new RuntimeException("Removed category failed: "+e.getMessage());
         }
     };
 
-    public List<Category> categories() throws Exception {
+    public List<Category> categories() {
         try {
             return categoryRepository.findAll();
 
         } catch (Exception e) {
-            throw new Exception("Categories not found");
+            throw new RuntimeException("Categories not found:" +e.getMessage());
         }
     };
 
-    public Category category(Integer idCategory) throws Exception {
+    public Category category(Integer idCategory) {
          return categoryRepository.findById(idCategory)
-                    .orElseThrow(() -> new Exception("Category not found"));
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
     }
 }
