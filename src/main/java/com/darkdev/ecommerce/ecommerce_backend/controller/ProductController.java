@@ -1,10 +1,7 @@
 package com.darkdev.ecommerce.ecommerce_backend.controller;
 
 import com.darkdev.ecommerce.ecommerce_backend.dto.global.ApiResponseDTO;
-import com.darkdev.ecommerce.ecommerce_backend.dto.product.ProductDeleteResponseDTO;
-import com.darkdev.ecommerce.ecommerce_backend.dto.product.ProductRequestDTO;
-import com.darkdev.ecommerce.ecommerce_backend.dto.product.ProductResponseDTO;
-import com.darkdev.ecommerce.ecommerce_backend.dto.product.ProductUpdatedRequestDTO;
+import com.darkdev.ecommerce.ecommerce_backend.dto.product.*;
 import com.darkdev.ecommerce.ecommerce_backend.exception.NotFoundException;
 import com.darkdev.ecommerce.ecommerce_backend.exception.ValidationException;
 import com.darkdev.ecommerce.ecommerce_backend.model.Category;
@@ -14,6 +11,7 @@ import com.darkdev.ecommerce.ecommerce_backend.service.ProductService;
 import com.darkdev.ecommerce.ecommerce_backend.utils.ExceptionUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -116,9 +114,10 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Object> products() {
-            List<Product> productList = productService.products();
-            List<ProductResponseDTO> productResponseDTOList = productList.stream()
+    public ResponseEntity<Object> products(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+            Page<Product> productPage = productService.products(page, size);
+
+            List<ProductResponseDTO> productResponseDTOList = productPage
                     .map(product -> {
                       Category category = product.getCategory();
                       return new ProductResponseDTO(
@@ -131,7 +130,10 @@ public class ProductController {
                       );
                     })
                     .toList();
-            return new ResponseEntity<>(new ApiResponseDTO<>(true, "Products found", productResponseDTOList), HttpStatus.OK);
+
+            ProductResponsePageableDTO productResponsePageableDTO = new ProductResponsePageableDTO(page, size, productResponseDTOList.size(), productResponseDTOList);
+
+            return new ResponseEntity<>(new ApiResponseDTO<>(true, "Products found", productResponsePageableDTO), HttpStatus.OK);
     }
 
     @GetMapping("/search/{name}")
