@@ -52,7 +52,7 @@ public class ProductService {
 
     public Page<Product> products(int page, int size) {
         try {
-            Pageable pageable = PageRequest.of(page, size, Sort.by("idProduct").descending());
+            Pageable pageable = PageRequest.of(page, size, Sort.by("idProduct").ascending());
             return productRepository.findAll(pageable);
 
         } catch (Exception e) {
@@ -93,6 +93,16 @@ public class ProductService {
             throw new RuntimeException("Product not apply descount stock");
         }
     }
+
+    public Page<Product> productsByCategory(String category, int page, int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by("idProduct").ascending());
+            return productRepository.findByCategory_name(category, pageable);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Products not found");
+        }
+    };
 
 
 }

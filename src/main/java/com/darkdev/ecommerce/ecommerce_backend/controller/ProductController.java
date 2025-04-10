@@ -114,8 +114,18 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Object> products(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-            Page<Product> productPage = productService.products(page, size);
+    public ResponseEntity<Object> products(
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+            Page<Product> productPage;
+
+            if (categoryName != null && !categoryName.isEmpty()) {
+                productPage = productService.productsByCategory(categoryName, page, size);
+            } else {
+                productPage = productService.products(page, size);
+            }
 
             List<ProductResponseDTO> productResponseDTOList = productPage
                     .map(product -> {
@@ -131,7 +141,12 @@ public class ProductController {
                     })
                     .toList();
 
-            ProductResponsePageableDTO productResponsePageableDTO = new ProductResponsePageableDTO(page, size, productResponseDTOList.size(), productResponseDTOList);
+            ProductResponsePageableDTO productResponsePageableDTO = new ProductResponsePageableDTO(
+                    page,
+                    size,
+                    productResponseDTOList.size(),
+                    productResponseDTOList
+            );
 
             return new ResponseEntity<>(new ApiResponseDTO<>(true, "Products found", productResponsePageableDTO), HttpStatus.OK);
     }
