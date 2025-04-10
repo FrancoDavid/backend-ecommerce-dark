@@ -32,7 +32,7 @@ public class CategoryController {
         }
 
         Category categorySaved = categoryService.create(category);
-        CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO(categorySaved.getName());
+        CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO(categorySaved.getName(), categorySaved.getUrl());
 
         return new ResponseEntity<>(new ApiResponseDTO<>(true, "Category created success", categoryResponseDTO), HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class CategoryController {
         }
 
         Category categorySaved = categoryService.update(category);
-        CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO(categorySaved.getName());
+        CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO(categorySaved.getName(), categorySaved.getUrl());
 
         return new ResponseEntity<>(new ApiResponseDTO<>(true, "Category updated success", categoryResponseDTO), HttpStatus.OK);
     }
@@ -61,7 +61,7 @@ public class CategoryController {
     public ResponseEntity<Object> categories() {
         List<Category> categoryList = categoryService.categories();
         List<CategoryResponseDTO> categoryResponseDTOList = categoryList.stream()
-                .map(category -> new CategoryResponseDTO(category.getName()))
+                .map(category -> new CategoryResponseDTO(category.getName(), category.getUrl()))
                 .toList();
 
         return new ResponseEntity<>(new ApiResponseDTO<>(true, "Categories found", categoryResponseDTOList), HttpStatus.OK);

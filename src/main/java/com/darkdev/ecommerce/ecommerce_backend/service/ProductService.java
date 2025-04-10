@@ -5,6 +5,9 @@ import com.darkdev.ecommerce.ecommerce_backend.model.Category;
 import com.darkdev.ecommerce.ecommerce_backend.model.Product;
 import com.darkdev.ecommerce.ecommerce_backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -47,9 +50,10 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     };
 
-    public List<Product> products() {
+    public Page<Product> products(int page, int size) {
         try {
-            return productRepository.findAll();
+            Pageable pageable = PageRequest.of(page, size, Sort.by("idProduct").ascending());
+            return productRepository.findAll(pageable);
 
         } catch (Exception e) {
             throw new RuntimeException("Products not found");
@@ -74,7 +78,7 @@ public class ProductService {
         }
     };
 
-    public void descountStock(Product product, Integer quantity) {
+    public void discountStock(Product product, Integer quantity) {
         try {
             int newStock = product.getStock() - quantity;
 
@@ -89,6 +93,16 @@ public class ProductService {
             throw new RuntimeException("Product not apply descount stock");
         }
     }
+
+    public Page<Product> productsByCategory(String category, int page, int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by("idProduct").ascending());
+            return productRepository.findByCategory_name(category, pageable);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Products not found");
+        }
+    };
 
 
 }

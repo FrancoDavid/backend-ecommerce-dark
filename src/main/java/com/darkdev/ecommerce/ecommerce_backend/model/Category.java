@@ -14,6 +14,9 @@ public class Category {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
+    @NotEmpty(message = "URL cannot be empty")
+    private String url;
+
     public String getName() {
         return name;
     }
@@ -28,5 +31,13 @@ public class Category {
 
     public void setIdCategory(Integer idCategory) {
         this.idCategory = idCategory;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

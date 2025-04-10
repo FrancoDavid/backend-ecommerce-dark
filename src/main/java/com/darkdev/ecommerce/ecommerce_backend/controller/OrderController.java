@@ -43,7 +43,7 @@ public class OrderController {
         for (OrderDetailsDTO items : orderRequestDTO.getDetails()) {
             Product product = productService.product(items.getIdProduct());
 
-            productService.descountStock(product, items.getQuantity());
+            productService.discountStock(product, items.getQuantity());
             orderDetailService.create(order, user, product, product.getCategory(), items.getQuantity());
         }
 
