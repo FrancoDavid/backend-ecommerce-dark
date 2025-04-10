@@ -7,14 +7,16 @@ public class ProductResponsePageableDTO {
     private Integer size;
     private Integer count;
     private Long total;
+    private Integer pages;
     private List<ProductResponseDTO> result;
 
-    public ProductResponsePageableDTO(Integer page, Integer size, Integer count, Long total, List<ProductResponseDTO> result) {
+    public ProductResponsePageableDTO(Integer page, Integer size, Integer count, Long total, Integer pages, List<ProductResponseDTO> result) {
         this.page = page;
         this.size = size;
         this.count = count;
         this.result = result;
         this.total = total;
+        this.pages = pages;
     }
 
     public Integer getPage() {
@@ -55,5 +57,13 @@ public class ProductResponsePageableDTO {
 
     public void setTotal(Long total) {
         this.total = total;
+    }
+
+    public Integer getPages() {
+        return pages;
+    }
+
+    public void setPages(Integer pages) {
+        this.pages = pages;
     }
 }

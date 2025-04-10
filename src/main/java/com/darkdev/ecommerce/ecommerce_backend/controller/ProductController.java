@@ -146,6 +146,7 @@ public class ProductController {
                     productPage.getSize(),
                     productPage.getNumberOfElements(),
                     productPage.getTotalElements(),
+                    productPage.getTotalPages(),
                     productResponseDTOList
             );
 
