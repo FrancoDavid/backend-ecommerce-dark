@@ -143,8 +143,9 @@ public class ProductController {
 
             ProductResponsePageableDTO productResponsePageableDTO = new ProductResponsePageableDTO(
                     page,
-                    size,
-                    productResponseDTOList.size(),
+                    productPage.getSize(),
+                    productPage.getNumberOfElements(),
+                    productPage.getTotalElements(),
                     productResponseDTOList
             );
 
