@@ -52,7 +52,8 @@ public class ProductController {
                 productSaved.getPrice(),
                 productSaved.getStock(),
                 category.getName(),
-                productSaved.getUrl()
+                productSaved.getUrl(),
+                productSaved.getIdProduct()
         );
 
         return new ResponseEntity<>(new ApiResponseDTO<>(true, "Product created", productResponseDTO), HttpStatus.OK);
@@ -81,7 +82,8 @@ public class ProductController {
                 productSaved.getPrice(),
                 productSaved.getStock(),
                 category.getName(),
-                productSaved.getUrl()
+                productSaved.getUrl(),
+                productSaved.getIdProduct()
         );
 
         return new ResponseEntity<>(new ApiResponseDTO<>(true, "Product updated", productResponseDTO), HttpStatus.OK);
@@ -107,7 +109,8 @@ public class ProductController {
                     product.getPrice(),
                     product.getStock(),
                     category.getName(),
-                    product.getUrl()
+                    product.getUrl(),
+                    product.getIdProduct()
             );
 
             return new ResponseEntity<>(new ApiResponseDTO<>(true, "Product found", productResponseDTO), HttpStatus.OK);
@@ -136,7 +139,8 @@ public class ProductController {
                               product.getPrice(),
                               product.getStock(),
                               category.getName(),
-                              product.getUrl()
+                              product.getUrl(),
+                              product.getIdProduct()
                       );
                     })
                     .toList();
@@ -165,7 +169,8 @@ public class ProductController {
                                 product.getPrice(),
                                 product.getStock(),
                                 category.getName(),
-                                product.getUrl()
+                                product.getUrl(),
+                                product.getIdProduct()
                         );
                     })
                     .toList();
@@ -191,7 +196,8 @@ public class ProductController {
                                 product.getPrice(),
                                 product.getStock(),
                                 category.getName(),
-                                product.getUrl()
+                                product.getUrl(),
+                                product.getIdProduct()
                         );
                     })
                     .toList();
