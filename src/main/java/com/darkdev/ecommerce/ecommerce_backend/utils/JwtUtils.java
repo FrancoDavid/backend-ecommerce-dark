@@ -3,6 +3,7 @@ package com.darkdev.ecommerce.ecommerce_backend.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -10,18 +11,22 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    private final String SECRET_KEY="lol";
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
 
     public String generateToken(String email) {
         return JWT.create()
                 .withSubject(email)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .sign(Algorithm.HMAC256(SECRET_KEY));
+                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration))
+                .sign(Algorithm.HMAC256(secretKey));
     }
 
     public String extractInfo(String token) {
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(SECRET_KEY))
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secretKey))
                 .build()
                 .verify(token);
         return decodedJWT.getSubject();
