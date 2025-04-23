@@ -7,14 +7,16 @@ public class ProductResponseDTO {
     private Integer stock;
     private String category;
     private String url;
+    private Integer idProduct;
 
-    public ProductResponseDTO(String name, String description, Integer price, Integer stock, String category, String url) {
+    public ProductResponseDTO(String name, String description, Integer price, Integer stock, String category, String url, Integer idProduct) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.category = category;
         this.url = url;
+        this.idProduct = idProduct;
     }
 
     public String getName() {
@@ -63,5 +65,13 @@ public class ProductResponseDTO {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getIdProduct() {
+        return idProduct;
+    }
+
+    public void setIdProduct(Integer idProduct) {
+        this.idProduct = idProduct;
     }
 }
