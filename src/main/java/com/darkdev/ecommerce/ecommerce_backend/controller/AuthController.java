@@ -5,7 +5,7 @@ import com.darkdev.ecommerce.ecommerce_backend.dto.user.LoginRequestDTO;
 import com.darkdev.ecommerce.ecommerce_backend.dto.user.UserResponseDTO;
 import com.darkdev.ecommerce.ecommerce_backend.exception.ValidationException;
 import com.darkdev.ecommerce.ecommerce_backend.model.User;
-import com.darkdev.ecommerce.ecommerce_backend.service.UserService;
+import com.darkdev.ecommerce.ecommerce_backend.service.AuthService;
 import com.darkdev.ecommerce.ecommerce_backend.utils.ExceptionUtils;
 import com.darkdev.ecommerce.ecommerce_backend.utils.JwtUtils;
 import jakarta.validation.Valid;
@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @Autowired
     private JwtUtils jwtUtils;
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginDTO) {
-        User user = userService.login(loginDTO.getEmail(), loginDTO.getPassword());
+        User user = authService.login(loginDTO.getEmail(), loginDTO.getPassword());
         String userToken = jwtUtils.generateToken(user.getEmail());
 
         UserResponseDTO userResponseDTO = new UserResponseDTO(
@@ -48,7 +48,7 @@ public class AuthController {
             throw new ValidationException("Error validations", ExceptionUtils.getErrorsFromBinding(bindingResult));
         }
 
-        User userSaved = userService.register(user);
+        User userSaved = authService.register(user);
         String userToken = jwtUtils.generateToken(userSaved.getEmail());
         UserResponseDTO userResponseDTO = new UserResponseDTO(
                 userSaved.getEmail(),

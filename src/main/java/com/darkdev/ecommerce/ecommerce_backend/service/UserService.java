@@ -18,29 +18,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User login(String email, String password) {
-        User user = userRepository.findByEmail(email);
-
-        if (user == null) {
-            throw new NotFoundException("User not found", "User don t exists");
-        }
-
-        if (!user.getPassword().equals(password)) {
-            throw new BadRequestException("User password wrong", "User don t pass");
-        }
-
-        return user;
-    }
-
-    public User register(User user) {
-        try {
-            return userRepository.save(user);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Email already exists");
-        }
-    }
-
     public User update(User user) {
         try {
             return userRepository.save(user);
