@@ -29,42 +29,6 @@ public class UserController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginDTO) {
-            User user = userService.login(loginDTO.getEmail(), loginDTO.getPassword());
-            String userToken = jwtUtils.generateToken(user.getEmail());
-
-            UserResponseDTO userResponseDTO = new UserResponseDTO(
-                    user.getName(),
-                    user.getEmail(),
-                    user.getRole(),
-                    userToken
-            );
-
-            return new ResponseEntity<>(new ApiResponseDTO<UserResponseDTO>(true, "Login success", userResponseDTO), HttpStatus.OK);
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/register")
-    public ResponseEntity<Object> register(@Valid @RequestBody User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new ValidationException("Error validations", ExceptionUtils.getErrorsFromBinding(bindingResult));
-        }
-
-        User userSaved = userService.register(user);
-        String userToken = jwtUtils.generateToken(userSaved.getEmail());
-        UserResponseDTO userResponseDTO = new UserResponseDTO(
-                userSaved.getEmail(),
-                userSaved.getName(),
-                userSaved.getRole(),
-                userToken
-        );
-
-        return new ResponseEntity<>(new ApiResponseDTO<UserResponseDTO>(true, "Register success", userResponseDTO), HttpStatus.OK);
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/update")
     public ResponseEntity<Object> update(@Valid @RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -77,7 +41,6 @@ public class UserController {
         return new ResponseEntity<>(new ApiResponseDTO<UserResponseDTO>(true, "Update success", userResponseDTO), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/{idUser}")
     public ResponseEntity<Object> remove(@PathVariable Integer idUser){
         userService.remove(idUser);
@@ -87,7 +50,6 @@ public class UserController {
 
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{idUser}")
     public ResponseEntity<Object> profile(@PathVariable Integer idUser) {
         User userProfile = userService.detail(idUser);
@@ -96,7 +58,6 @@ public class UserController {
         return new ResponseEntity<>(new ApiResponseDTO<UserResponseDTO>(true, "Profile found", userResponseDTO), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/all")
     public ResponseEntity<Object> users() {
         List<User> userList = userService.users();
