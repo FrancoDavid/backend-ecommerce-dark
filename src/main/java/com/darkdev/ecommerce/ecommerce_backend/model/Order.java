@@ -1,7 +1,6 @@
 package com.darkdev.ecommerce.ecommerce_backend.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -16,6 +15,12 @@ public class Order {
     @NotNull(message = "Total cannot be null")
     private Integer total;
 
+    @NotNull(message = "Total cannot be null")
+    private Integer subtotal;
+
+    @NotNull(message = "Total cannot be null")
+    private Integer delivery;
+
     @ManyToOne
     @JoinColumn(name = "user_iduser", nullable = false)
     private User idUser;
@@ -23,9 +28,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer idOrder, Integer total, User idUser) {
+    public Order(Integer idOrder, Integer total, Integer subtotal, Integer delivery, User idUser) {
         this.idOrder = idOrder;
         this.total = total;
+        this.delivery = delivery;
+        this.subtotal = subtotal;
         this.idUser = idUser;
     }
 
@@ -51,5 +58,21 @@ public class Order {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public Integer getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(Integer subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public Integer getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Integer delivery) {
+        this.delivery = delivery;
     }
 }

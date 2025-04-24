@@ -183,7 +183,6 @@ public class ProductController {
             }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/lasts")
     public ResponseEntity<Object> productsLasts() {
             List<Product> productList = productService.productsLasts();

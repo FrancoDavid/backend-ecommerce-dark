@@ -38,7 +38,7 @@ public class OrderController {
     public ResponseEntity<Object> create(@Valid @RequestBody OrderRequestDTO orderRequestDTO, BindingResult bindingResult) {
 
         User user = userService.searchByEmail(orderRequestDTO.getEmail());
-        Order order = orderService.create(user, orderRequestDTO.getTotal());
+        Order order = orderService.create(user, orderRequestDTO.getTotal(), orderRequestDTO.getSubtotal(), orderRequestDTO.getDelivery());
 
         for (OrderDetailsDTO items : orderRequestDTO.getDetails()) {
             Product product = productService.product(items.getIdProduct());

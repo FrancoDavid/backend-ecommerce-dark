@@ -14,9 +14,9 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Order create(User user, Integer total) {
+    public Order create(User user, Integer total, Integer subtotal, Integer delivery) {
            try {
-               Order order = new Order(null, total, user);
+               Order order = new Order(null, total, subtotal, delivery, user);
                return orderRepository.save(order);
 
            } catch (Exception e) {
